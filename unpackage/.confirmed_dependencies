@@ -1,0 +1,25 @@
+{
+	"index.html": {
+		"resources": [
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"views/login.html"
+		],
+		"refer": [
+			"views/login.html"
+		]
+	},
+	"views/login.html": {
+		"resources": [
+			"index.html",
+			"js/mui.min.js",
+			"fonts/mui.ttf",
+			"css/mui.min.css",
+			"image/logo.png"
+		],
+		"refer": [
+			"index.html"
+		]
+	}
+}

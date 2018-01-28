@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>监理审核</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+			div.history_page {
+				width: 100vw;
+				min-height: 100vh;
+				background: #fff;
+			}
+			
+			.content>div {
+				padding-top: 44px;
+			}
+			
+			ul {
+				font-size: 0;
+				text-align: center;
+			}
+			
+			.th_list {
+				width: 100%;
+				background: #8f8f94;
+				color: #fff;
+				font-size: 15px;
+				line-height: 40px;
+			}
+			
+			.th_list>span,
+			.tr_list>span {
+				display: inline-block;
+				width: 20%;
+			}
+			
+			.th_list>span:nth-of-type(3),
+			.tr_list>span:nth-of-type(3) {
+				width: 40%;
+			}
+			
+			.tr_list {
+				width: 100%;
+				background: #ddd;
+				color: #000;
+				font-size: 12px;
+				padding: 5px 0;
+				margin: 3px 0;
+			}
+			
+			.tr_list>span:nth-of-type(1) {
+				color: #179552;
+			}
+			
+			.th_list>div,
+			.tr_list>div {
+				display: inline-block;
+				width: 20%;
+			}
+			
+			p.mio-check {
+				display: none;
+				width: 15%;
+				position: relative;
+			}
+			p.mio-check.open{
+				display: inline-block;
+			}
+			p.mio-check>input {
+				position: absolute;
+				top: -11px;
+				left: 17px;
+				z-index: 100;
+				opacity: 0;
+			}
+			
+			p.mio-check>span.mask {
+				width: 16px;
+				height: 16px;
+				background: none;
+				border: 1px solid #000;
+				border-radius: 50%;
+				display: inline-block;
+				position: absolute;
+				top: -13px;
+				left: 15px;
+				z-index: 99;
+			}
+			
+			p.mio-check>span.mask.open {
+				background: url(../image/checked.png) #013cc1;
+				background-size: cover;
+				border-color: #013cc1;
+			}
+			div.footer{display:none;width:100%;position: fixed;bottom: 0;left: 0;background: #ddd;line-height: 40px;padding: 0 2%;}
+			div.footer.open{display: block;}
+			div.footer>p>span{display: inline-block;line-height: 40px;}
+			.success{color: #013cc1;}
+			.fail{color: #c40000;float: right;}
+			.mui-icon-info-filled:before{content: '编辑';font-size:16px;color: #fff;}
+		</style>
+	</head>
+
+	<body>
+		<div class="history_page">
+			<div class="content">
+				<header id="header" class="mui-bar mui-bar-nav">
+					<a href="./checkdetail.html" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					<a id="edit" class="mui-icon mui-icon-info-filled mui-pull-right"></a>
+					<h1 class="mui-title">监理审核</h1>
+				</header>
+				<div>
+					<ul>
+						<li class="th_list">
+							<p class="mio-check all-check">
+								<input name="checkbox1" value="Item 1" type="checkbox">
+								<span class="mask"></span>
+							</p>
+							<span>资料状态</span>
+							<span>合格率</span>
+							<span>资料名称</span>
+						</li>
+						<li class="tr_list">
+							<p class="mio-check item-check">
+								<input name="checkbox2" value="Item 1" type="checkbox">
+								<span class="mask"></span>
+							</p>
+							<span>未审核</span>
+							<span>100.00%</span>
+							<span>证书证书证书证书</span>
+						</li>
+						<li class="tr_list">
+							<p class="mio-check item-check">
+								<input name="checkbox3" value="Item 1" type="checkbox">
+								<span class="mask"></span>
+							</p>
+							<span>未审核</span>
+							<span>100.00%</span>
+							<span>证书证书证书证书</span>
+						</li>
+						<li class="tr_list">
+							<p class="mio-check item-check">
+								<input name="checkbox3" value="Item 1" type="checkbox">
+								<span class="mask"></span>
+							</p>
+							<span>未审核</span>
+							<span>100.00%</span>
+							<span>证书证书证书证书</span>
+						</li>
+					</ul>
+				</div>
+				<div class="footer">
+					<p>
+						<span class="success" id="success">审核通过</span>
+						<span class="fail" id="fail">审核不通过</span>
+					</p>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/echarts-all.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		var flag = true;
+		$('#edit').click(function(){
+			flag = !flag;
+			if(!flag){
+				$('p.mio-check').addClass('open');
+				$('div.footer').addClass('open');
+			}else{
+				$('p.mio-check.open').removeClass('open');
+				$('div.footer.open').removeClass('open');
+			}
+		})
+		$('p.mio-check').click(function() {
+			var state = $(this).children('input').prop("checked");
+			var all = $(this).hasClass('all-check')
+			if (all) {
+				//全选
+				if (state) {
+					$('p.mio-check').each(function() {
+						$(this).children('span').addClass('open');
+					})
+				} else {
+					$('p.mio-check').each(function() {
+						$(this).children('span.open').removeClass('open');
+					})
+				}
+			} else {
+				//单选
+				var	add = 0,
+					size = $('p.item-check').length;
+				$('p.item-check').each(function() {
+					var listState = listState = $(this).children('input').prop("checked");
+					if (listState) {
+						add++;
+					}
+				})
+				//单选判断全选
+				if (add === size) {
+					$('p.mio-check').each(function() {
+						$(this).children('span').addClass('open');
+					})
+				} else{
+					$('p.all-check').children('span.open').removeClass('open');
+					if (state) {
+						$(this).children('span').addClass('open');
+					} else {
+						$(this).children('span.open').removeClass('open');
+					}
+				}
+			}
+		})
+		
+		document.getElementById("success").addEventListener('tap', function() {
+			var btnArray = ['确定', '取消'];
+			mui.confirm('请您再次确认信息是否合格，避免误删？', '提示', btnArray, function(e) {
+				if (e.index == 1) {
+					
+				} else {
+					
+				}
+			})
+		});
+		
+		document.getElementById("fail").addEventListener('tap', function() {
+			var btnArray = ['确定', '取消'];
+			mui.confirm('请您再次确认信息是否合格，避免误删？', '提示', btnArray, function(e) {
+				if (e.index == 1) {
+					
+				} else {
+					
+				}
+			})
+		});
+	</script>
+
+</html>

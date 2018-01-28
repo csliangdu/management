@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>不合格数据统计</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+			div.datachart_page{width:100vw;min-height:100vh;background: #fff;}
+			.content>div{padding-top:44px;}
+			.mui-segmented-control{border: none;}
+			.mui-segmented-control .mui-control-item{background: #333;color: #fff;border-color: #ddd;}
+			.mui-segmented-control .mui-control-item.mui-active{color: #008dff;background: #333;}
+			.chart {width:300px;height: 200px;margin: 0 auto;padding: 0px;margin-top:30px;}
+			
+			ul{font-size:0;text-align: center;}
+			.th_list{width: 100%;background: #8f8f94;color: #fff;font-size:15px;line-height: 40px;}
+			.th_list>span,.tr_list>span{display: inline-block;width: 24%;}
+			.tr_list{width: 100%;background: #ddd;color: #000;font-size:12px;padding: 5px 0;margin:3px 0;}
+			.tr_list>span>a.mui-icon{font-size: 15px;border: 1px solid #000;border-radius: 50%;color:#000;}
+			.tr_list>span:nth-of-type(1){width:22%}
+			.tr_list>span:nth-of-type(2){width:18%}
+			.tr_list>span:nth-of-type(3){width:40%}
+			.tr_list>span:nth-of-type(4){width:10%}
+		</style>
+	</head>
+
+	<body>
+		<div class="datachart_page">
+			<div class="content">
+				<header id="header" class="mui-bar mui-bar-nav">
+					<a href="./datacount.html" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					<h1 class="mui-title">不合格数据统计</h1>
+				</header>
+				<div>
+					<div id="segmentedControl" class="mui-segmented-control">
+						<a class="mui-control-item mui-active" href="#chart">统计图表</a>
+						<a class="mui-control-item" href="#table">表格汇总</a>
+					</div>
+					<div id="chart" class="mui-control-content mui-active">
+						<div class="chart" id="barChart"></div>
+					</div>
+					<div id="table" class="mui-control-content">
+						<ul>
+							<li class="th_list">
+								<span>资料状态</span>
+								<span>合格率</span>
+								<span>资料名称</span>
+								<span>详情</span>
+							</li>
+							<li class="tr_list">
+								<span>审核未通过</span>
+								<span>100.00%</span>
+								<span>撒旦法卡萨帝法</span>
+								<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
+							</li>
+							<li class="tr_list">
+								<span>审核未通过</span>
+								<span>100.00%</span>
+								<span>撒旦法卡萨帝法</span>
+								<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
+							</li>
+							<li class="tr_list">
+								<span>审核未通过</span>
+								<span>100.00%</span>
+								<span>撒旦法卡萨帝法</span>
+								<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/echarts-all.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		var getOption = function(chartType) {
+				var chartOption =  {
+					legend: {
+						data: ['合格', '不合格']
+					},
+					grid: {
+						x: 35,
+						x2: 10,
+						y: 30,
+						y2: 25
+					},
+					xAxis: [{
+						type: 'category',
+						data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月']
+					}],
+					yAxis: [{
+						type: 'value',
+						splitArea: {
+							show: true
+						}
+					}],
+					series: [{
+						name: '合格',
+						type: chartType,
+						itemStyle:{
+			                normal:{color:'#013cc1'}
+			           },
+						data: [2.0, 4.9, 7.0, 23.2, 25.6, 76.7, 135.6, 162.2, 32.6, 20.0, 6.4, 3.3]
+					}, {
+						name: '不合格',
+						type: chartType,
+						itemStyle:{
+			                normal:{color:'#c40000'}
+			           },
+						data: [2.6, 5.9, 9.0, 26.4, 28.7, 70.7, 175.6, 182.2, 48.7, 18.8, 6.0, 2.3]
+					}]
+				};
+				return chartOption;
+			};
+			var byId = function(id) {
+				return document.getElementById(id);
+			};
+			var barChart = echarts.init(byId('barChart'));
+			barChart.setOption(getOption('bar'));
+	</script>
+
+</html>

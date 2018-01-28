@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>查看历史资料</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+			div.history_page{width:100vw;min-height:100vh;background: #fff;}
+			.content>div{padding-top:44px;}
+			ul{font-size:0;text-align: center;}
+			.th_list{width: 100%;background: #8f8f94;color: #fff;font-size:15px;line-height: 40px;}
+			.th_list>span,.tr_list>span{display: inline-block;width: 32%;}
+			.tr_list{width: 100%;background: #ddd;color: #000;font-size:12px;padding: 5px 0;margin:3px 0;}
+			.tr_list>span:nth-of-type(1){color: #179552;}
+		</style>
+	</head>
+
+	<body>
+		<div class="history_page">
+			<div class="content">
+				<header id="header" class="mui-bar mui-bar-nav">
+					<a href="./checkdetail.html" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					<h1 class="mui-title">查看历史资料</h1>
+				</header>
+				<div>
+					<ul>
+						<li class="th_list">
+							<span>合格资料</span>
+							<span>审核人</span>
+							<span>审核时间</span>
+						</li>
+						<li class="tr_list">
+							<span>合格</span>
+							<span>慕寒</span>
+							<span>2017.10.3</span>
+						</li>
+						<li class="tr_list">
+							<span>合格</span>
+							<span>慕寒</span>
+							<span>2017.10.3</span>
+						</li>
+						<li class="tr_list">
+							<span>合格</span>
+							<span>慕寒</span>
+							<span>2017.10.3</span>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/mui.min.js"></script>
+	<script src="../js/echarts-all.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+	</script>
+
+</html>

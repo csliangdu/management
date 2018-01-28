@@ -1,0 +1,56 @@
+.login_page{font-size:14px;background: #008dff;width: 100vw;height: 100vh;overflow: hidden;}
+.login_page>.content{width:70%;margin: 0 auto;}
+div.banner_font{width: 100%;padding:40% 0}
+div.banner_font>img{width:100%;}
+form.login-form.mui-input-group{background: none;}
+form.login-form .mui-input-row{background: #fff;}
+.mui-input-group:after{height: 0;}
+form.login-form .mui-input-row label~input{font-size: 14px;width: 80%;}
+form.login-form.mui-input-group .mui-input-row{margin-bottom: 5%;}
+.mui-input-row label.icon-pwd,.mui-input-row label.icon-user{width:11%;height: 100%;margin-left: 3%;padding:0;}
+label.icon-pwd{background: url(../image/pwd-icon.png) center no-repeat;background-size: contain;}
+label.icon-user{background: url(../image/user-icon.png) center no-repeat;background-size: contain;}
+div.item{text-align: right;color: #fff;margin-bottom:5%;}
+div.item input[type="checkbox"]{vertical-align: middle;}
+div.btn_group button{border-radius:0;line-height:25px;background: #043290;color:#fff;font-size:16px;text-align: center;border:none;}
+button.login_btn{width:63%;margin-right:1%;}
+button.reset_btn{width:34%;}
+
+.mui-toast-message{background: rgba(0,0,0,.7);color: #fff;}
+
+p.mio-check {
+	display: inline-block;
+	width: 15%;
+	position: relative;
+}
+p.mio-check>input {
+	position: absolute;
+	top: -11px;
+	left: 17px;
+	z-index: 100;
+	opacity: 0;
+}
+
+p.mio-check>span.mask {
+	width: 14px;
+	height: 14px;
+	background: none;
+	border: 1px solid #fff;
+	display: inline-block;
+	position: absolute;
+	top: -12px;
+	left: 16px;
+	z-index: 99;
+	font-size:24px;
+	color: #fff;
+}
+.mui-icon-checkmarkempty:before{
+	position: relative;
+	top: -6px;
+	left: -5px;
+}
+p.mio-check>span.mask.open {
+	background: url(../image/checked.png) #013cc1;
+	background-size: cover;
+	border-color: #013cc1;
+}

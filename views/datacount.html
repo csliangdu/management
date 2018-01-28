@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title>不合格数据统计</title>
+		<link href="../css/mui.min.css" rel="stylesheet" />
+		<!--<link rel="stylesheet" type="text/css" href="../css/mui.picker.min.css" />-->
+		<link rel="stylesheet" type="text/css" href="../css/common.css" />
+		<style type="text/css">
+			div.datacount_page{width:100vw;min-height:100vh;background: #fff;}
+			div.datacount_page ul{font-size:14px;padding-top:44px;margin-bottom:40px;}
+			div.datacount_page li{border-bottom: 1px solid #ddd;padding-left:10px;}
+			div.datacount_page li>input{width: 70%;margin: 0;font-size: 14px;border: none;}
+			div.datacount_page li span{display: inline-block;line-height: 35px;color: #000;vertical-align: middle;}
+			div.datacount_page div.search_btn{background: #008dff;color: #fff;text-align: center;font-size:16px;line-height: 35px;margin: 0 10px;border-radius: 5px;}
+		</style>
+	</head>
+
+	<body>
+		<div class="datacount_page">
+			<div class="content">
+				<header id="header" class="mui-bar mui-bar-nav">
+					<a href="../index.html" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+					<h1 class="mui-title">不合格数据统计</h1>
+				</header>
+				<ul>
+					<li>
+						<span>起始时间：</span>
+						<input type="date" name="startTime"  />
+					</li>
+					<li>
+						<span>结束时间：</span>
+						<input type="date" name="endTime"  />
+					</li>
+					<li>
+						<span>项目：</span>
+						<span></span>
+					</li>
+					<li>
+						<span>标段：</span>
+						<span></span>
+					</li>
+				</ul>
+				<div class="search_btn" id="search">查询</div>
+			</div>
+		</div>
+	</body>
+	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/mui.min.js"></script>
+	<!--<script src="../js/mui.picker.min.js"></script>-->
+	<script type="text/javascript" charset="utf-8">
+		mui.init();
+		$("#search").click(function(){
+			window.location.href = "http://127.0.0.1:8020/management/views/datachart.html"
+		})
+	</script>
+
+</html>
