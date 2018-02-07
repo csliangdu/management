@@ -24,6 +24,10 @@
 			.tr_list>span:nth-of-type(2){width:18%}
 			.tr_list>span:nth-of-type(3){width:40%}
 			.tr_list>span:nth-of-type(4){width:10%}
+			span.fontColor.black{color:#000;}
+			span.fontColor.green{color:#179552;}
+			span.fontColor.red{color:#c40000;}
+			span.fontColor.blue{color:#013cc1;}
 		</style>
 	</head>
 
@@ -51,19 +55,19 @@
 								<span>详情</span>
 							</li>
 							<li class="tr_list">
-								<span>审核未通过</span>
+								<span class="fontColor red">未通过</span>
 								<span>100.00%</span>
 								<span>撒旦法卡萨帝法</span>
 								<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
 							</li>
 							<li class="tr_list">
-								<span>审核未通过</span>
+								<span class="fontColor red">未通过</span>
 								<span>100.00%</span>
 								<span>撒旦法卡萨帝法</span>
 								<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
 							</li>
 							<li class="tr_list">
-								<span>审核未通过</span>
+								<span class="fontColor red">未通过</span>
 								<span>100.00%</span>
 								<span>撒旦法卡萨帝法</span>
 								<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
@@ -74,10 +78,12 @@
 			</div>
 		</div>
 	</body>
+	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/mui.min.js"></script>
 	<script src="../js/echarts-all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		mui.init();
 		var getOption = function(chartType) {
 				var chartOption =  {
 					legend: {

@@ -14,3 +14,7 @@ ul.home_menu>li>a>p{width:100%;height: 50px;position: relative;}
 ul.home_menu>li>a>p>img{width: 24%;margin-top:10px;}
 ul.home_menu>li>a>p>span{position: absolute;top: -6px;right: -6px;display: none;}
 ul.home_menu>li>a>p>span.open{display: block;}
+/*MUI*/
+.mui-popup-inner p{color:#008dff;line-height: 30px;border-bottom: 1px solid #ddd;}
+.mui-popup-inner p:last-of-type{border-bottom: none;}
+.mui-popup-title+.mui-popup-text{max-height: 320px;overflow-y: scroll;}

@@ -8,11 +8,118 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../css/common.css" />
 		<style type="text/css">
-			div.setting_page{width:100vw;height:100vh;overflow:hidden;background: #fff;}
-			div.setting_page ul{font-size:14px;margin-top: 44px;}
-			div.setting_page ul>li{line-height: 40px;border-bottom:1px solid #ddd;padding:0 10px;}
-			div.setting_page ul>li:nth-of-type(1){border-top: 1px solid #ddd;}
-			div.setting_page li>span:nth-of-type(2){color: #ACACB4;float: right;}
+			div.setting_page {
+				width: 100vw;
+				height: 100vh;
+				overflow: hidden;
+				background: #fff;
+			}
+			
+			div.setting_page ul {
+				font-size: 14px;
+				margin-top: 44px;
+			}
+			
+			div.setting_page ul>li {
+				line-height: 40px;
+				border-bottom: 1px solid #ddd;
+				padding: 0 10px;
+			}
+			
+			div.setting_page ul>li:nth-of-type(1) {
+				border-top: 1px solid #ddd;
+			}
+			
+			div.setting_page li>span:nth-of-type(2) {
+				color: #ACACB4;
+				float: right;
+			}
+			
+			form.dlg-form .mui-input-row .mui-input-password~.mui-icon-eye {
+				height: 24px;
+			}
+			
+			form.dlg-form {
+				font-size: 14px;
+				border: none;
+				padding: 20px;
+				border-bottom-left-radius: 5px;
+				border-bottom-right-radius: 5px;
+			}
+			
+			form.dlg-form:before,
+			form.dlg-form:after,
+			form.dlg-form .mui-input-row:after {
+				height: 0px;
+			}
+			
+			form.dlg-form .mui-input-row {
+				border-bottom: 1px solid #ddd;
+			}
+			
+			form.dlg-form h2 {
+				text-align: center;
+				padding: 10px 0;
+				font-size: 15px;
+			}
+			
+			form.dlg-form .mui-input-row label~input {
+				font-size: 14px;
+				width: 60%;
+			}
+			
+			form.dlg-form .mui-input-row label {
+				padding-right: 10px;
+				padding-left: 0;
+				width: 40%;
+			}
+			
+			form.dlg-form .btn_group {
+				border: none;
+				text-align: center;
+				margin-top: 15px;
+			}
+			
+			form.dlg-form .btn_group button {
+				background: #008dff;
+				color: white;
+				border-color: #008DFF;
+				width: 25%;
+			}
+			
+			.modify_btn {
+				margin-right: 20px;
+			}
+			
+			form.dlg-form .btn_group button:active {
+				background: #013cc1;
+			}
+			
+			.dlg_class {
+				width: 100%;
+				height: 100%;
+				background: rgba(0, 0, 0, .5);
+				position: fixed;
+				top: 0;
+				left: 0;
+				display: none;
+			}
+			
+			.dlg_class>div {
+				width: 90%;
+				margin: 0 auto;
+				margin-top: 55%;
+				background: #fff;
+				border-radius: 5px;
+			}
+			
+			.dlg_class.open {
+				display: block;
+			}
+			
+			.closeDlg {
+				text-align: right;
+			}
 		</style>
 	</head>
 
@@ -38,11 +145,116 @@
 					</li>
 				</ul>
 			</div>
+			<div id="dlg" class="dlg_class">
+				<div>
+					<div class="closeDlg">
+						<i class="mui-icon mui-icon-close"></i>
+					</div>
+					<form class="mui-input-group dlg-form">
+						<h2>修改密码</h2>
+						<div class="mui-input-row">
+							<label class="icon-pwd">输入新密码:</label>
+							<input type="password" name="password" class="mui-input-password newPwd" placeholder="输入新密码">
+						</div>
+						<div class="mui-input-row">
+							<label class="icon-pwd">再次输入密码:</label>
+							<input type="password" name="repassword" class="mui-input-password reNewPwd" placeholder="再次输入密码">
+						</div>
+						<div class="btn_group">
+							<button type="button" class="modify_btn" id="Modify">修改</button>
+							<button type="button" class="reset_btn" id="Reset">重置</button>
+						</div>
+					</form>
+				</div>
+			</div>
 		</div>
 	</body>
+	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		mui.init();
+		var Params = getCode();
+		$.ajax({
+			url: baseUrl + 'Sys/GetRoleList',
+			type: 'GET',
+			dataType: 'json',
+			success: function(res) {
+				var rid = res.rows[0].ROLEID;
+				$.ajax({
+					url: baseUrl + 'Sys/GetAccountList',
+					type: 'GET',
+					dataType: 'json',
+					data: {
+						roleId: rid,
+						start: 0,
+						page: 1,
+						limit: 20,
+		            	slinkcode:Params[0],
+						r:Params[1]
+					},
+					success: function(res) {
+						console.log(res)
+						var username = window.sessionStorage.getItem('username');
+						var data = res.rows.filter(item=>item.ACCOUNTNAME == username)[0];//注：数据用户登录成功后应存储的用户名
+						$(".userName").text(data.ACCOUNTNAME);
+						modifyPwd(data);
+					}
+				})
+			}
+		})
+		
+		//修改密码
+		function modifyPwd(data) {
+			console.log(data)
+			$('#reset_pwd').click(function() {
+				$('.dlg_class').addClass('open');
+				$('.closeDlg').click(function() {
+					$('.dlg_class.open').removeClass('open');
+				})
+				$('#Reset').click(function() {
+					$('input.newPwd').val("");
+					$('input.reNewPwd').val("");
+				})
+				$('#Modify').click(function() {
+					var newPwd = $('input.newPwd').val();
+					var reNewPwd = $('input.reNewPwd').val();
+					if(!newPwd) {
+						mui.toast('请输入新密码！');
+						return false;
+					}
+					if(!reNewPwd) {
+						mui.toast('请再次输入密码！');
+						return;
+					}
+					if(reNewPwd != newPwd) {
+						mui.toast('两次密码不一致！');
+						return;
+					}
+					$.ajax({
+						url: baseUrl + 'Sys/AddAccount',
+						type: 'POST',
+						data: {
+							roleid: data.ROLEID,
+							ACCOUNTID: data.ACCOUNTID,
+							ACCOUNTNAME: data.ACCOUNTNAME,
+							ACCOUNTPWD: newPwd,
+							UserName: data.UserName,
+							MOBILE: data.MOBILE
+						},
+						dataType: 'json',
+						success: function(res) {
+							console.log(res);
+							if(res.success){
+								$('.dlg_class.open').removeClass('open');
+								mui.toast('修改成功');
+							}
+						}
+					})
+				})
+			})
+		}
+		
 	</script>
 
 </html>

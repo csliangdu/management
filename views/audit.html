@@ -8,7 +8,7 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../css/common.css" />
 		<style type="text/css">
-			div.history_page {
+			div.audit_page {
 				width: 100vw;
 				min-height: 100vh;
 				background: #fff;
@@ -34,12 +34,8 @@
 			.th_list>span,
 			.tr_list>span {
 				display: inline-block;
-				width: 20%;
-			}
-			
-			.th_list>span:nth-of-type(3),
-			.tr_list>span:nth-of-type(3) {
-				width: 40%;
+				width: 32%;
+				vertical-align: middle;
 			}
 			
 			.tr_list {
@@ -66,9 +62,11 @@
 				width: 15%;
 				position: relative;
 			}
-			p.mio-check.open{
+			
+			p.mio-check.open {
 				display: inline-block;
 			}
+			
 			p.mio-check>input {
 				position: absolute;
 				top: -11px;
@@ -95,24 +93,57 @@
 				background-size: cover;
 				border-color: #013cc1;
 			}
-			div.footer{display:none;width:100%;position: fixed;bottom: 0;left: 0;background: #ddd;line-height: 40px;padding: 0 2%;}
-			div.footer.open{display: block;}
-			div.footer>p>span{display: inline-block;line-height: 40px;}
-			.success{color: #013cc1;}
-			.fail{color: #c40000;float: right;}
-			.mui-icon-info-filled:before{content: '编辑';font-size:16px;color: #fff;}
+			
+			div.footer {
+				display: none;
+				width: 100%;
+				position: fixed;
+				bottom: 0;
+				left: 0;
+				background: #ddd;
+				line-height: 40px;
+				padding: 0 2%;
+				z-index: 1000;
+			}
+			
+			div.footer.open {
+				display: block;
+			}
+			
+			div.footer>p>span {
+				display: inline-block;
+				line-height: 40px;
+			}
+			
+			.success {
+				color: #013cc1;
+			}
+			
+			.fail {
+				color: #c40000;
+				float: right;
+			}
+			
+			.mui-icon-info-filled:before {
+				content: '编辑';
+				font-size: 16px;
+				color: #fff;
+			}
+			div.contain{
+				margin-bottom: 40px;
+			}
 		</style>
 	</head>
 
 	<body>
-		<div class="history_page">
+		<div class="audit_page">
 			<div class="content">
 				<header id="header" class="mui-bar mui-bar-nav">
 					<a href="./checkdetail.html" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 					<a id="edit" class="mui-icon mui-icon-info-filled mui-pull-right"></a>
 					<h1 class="mui-title">监理审核</h1>
 				</header>
-				<div>
+				<div class="contains">
 					<ul>
 						<li class="th_list">
 							<p class="mio-check all-check">
@@ -123,33 +154,17 @@
 							<span>合格率</span>
 							<span>资料名称</span>
 						</li>
-						<li class="tr_list">
-							<p class="mio-check item-check">
-								<input name="checkbox2" value="Item 1" type="checkbox">
-								<span class="mask"></span>
-							</p>
-							<span>未审核</span>
-							<span>100.00%</span>
-							<span>证书证书证书证书</span>
-						</li>
-						<li class="tr_list">
-							<p class="mio-check item-check">
-								<input name="checkbox3" value="Item 1" type="checkbox">
-								<span class="mask"></span>
-							</p>
-							<span>未审核</span>
-							<span>100.00%</span>
-							<span>证书证书证书证书</span>
-						</li>
-						<li class="tr_list">
-							<p class="mio-check item-check">
-								<input name="checkbox3" value="Item 1" type="checkbox">
-								<span class="mask"></span>
-							</p>
-							<span>未审核</span>
-							<span>100.00%</span>
-							<span>证书证书证书证书</span>
-						</li>
+						<div class="tr">
+							<!--<li class="tr_list">
+								<p class="mio-check item-check">
+									<input name="checkbox2" value="Item 1" type="checkbox">
+									<span class="mask"></span>
+								</p>
+								<span>未审核</span>
+								<span>100.00%</span>
+								<span>证书证书证书证书</span>
+							</li>-->
+						</div>
 					</ul>
 				</div>
 				<div class="footer">
@@ -162,82 +177,195 @@
 		</div>
 	</body>
 	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/mui.min.js"></script>
 	<script src="../js/echarts-all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		mui.init();
-		var flag = true;
-		$('#edit').click(function(){
-			flag = !flag;
-			if(!flag){
-				$('p.mio-check').addClass('open');
-				$('div.footer').addClass('open');
-			}else{
-				$('p.mio-check.open').removeClass('open');
-				$('div.footer.open').removeClass('open');
-			}
-		})
-		$('p.mio-check').click(function() {
-			var state = $(this).children('input').prop("checked");
-			var all = $(this).hasClass('all-check')
-			if (all) {
-				//全选
-				if (state) {
-					$('p.mio-check').each(function() {
-						$(this).children('span').addClass('open');
-					})
-				} else {
-					$('p.mio-check').each(function() {
-						$(this).children('span.open').removeClass('open');
-					})
-				}
-			} else {
-				//单选
-				var	add = 0,
-					size = $('p.item-check').length;
-				$('p.item-check').each(function() {
-					var listState = listState = $(this).children('input').prop("checked");
-					if (listState) {
-						add++;
+
+		var id = getQueryString("id");
+		getData();
+		
+		
+		//获取数据
+		function getData() {
+			var Params = getCode();
+			$.ajax({
+				url: baseUrl + 'RightMain/GetReportList',
+				type: 'GET',
+				data: {
+					id: id,
+	            	slinkcode:Params[0],
+					r:Params[1]
+				},
+				dataType: 'json',
+				success: function(res) {
+					console.log(res);
+					var model = "";
+					var dataList = res.rows;
+					if(dataList.length > 0) {
+						for(var i = 0; i < dataList.length; i++) {
+							var status;
+							switch(dataList[i].CheckPass) {
+								case 1:
+									status = "审核通过";
+									break
+								case 2:
+									status = "审核未通过";
+									break
+								case 3:
+									status = "已删除";
+									break
+								case 99:
+									status = "未通过已撤回";
+									break
+								case 100:
+									status = "重新上传";
+									break
+								default:
+									status = "未审核";
+							}
+							if(status.length>0) {
+								model += '<li class="tr_list">' +
+									'<p class="mio-check item-check" data-id="'+dataList[i].SQLID+'">' +
+									'<input name="checkbox3" value="Item 1" type="checkbox">' +
+									'<span class="mask"></span>' +
+									'</p>' +
+									'<span>未审核</span>' +
+									'<span>0.00%</span>' +
+									'<span>' + dataList[i].RepName + '</span>'
+								'</li>';
+							} else {
+								model = "<li class='tr_list'>暂无数据</li>"
+							}
+						}
+						$('.audit_page .tr').html(model);
+						chooseItem();
 					}
-				})
-				//单选判断全选
-				if (add === size) {
-					$('p.mio-check').each(function() {
-						$(this).children('span').addClass('open');
-					})
-				} else{
-					$('p.all-check').children('span.open').removeClass('open');
-					if (state) {
-						$(this).children('span').addClass('open');
-					} else {
-						$(this).children('span.open').removeClass('open');
-					}
 				}
-			}
-		})
+			})
+		}
+		
 		
 		document.getElementById("success").addEventListener('tap', function() {
 			var btnArray = ['确定', '取消'];
 			mui.confirm('请您再次确认信息是否合格，避免误删？', '提示', btnArray, function(e) {
-				if (e.index == 1) {
-					
+				if(e.index == 1) {
+					console.log('no1');
 				} else {
-					
+					console.log('ok1')
+					postCheck(1);
+				}
+			})
+		});
+
+		document.getElementById("fail").addEventListener('tap', function() {
+			var btnArray = ['确定', '取消'];
+			mui.confirm('请您再次确认信息是否合格，避免误删？', '提示', btnArray, function(e) {
+				if(e.index == 1) {
+					console.log('no2');
+				} else {
+					console.log('ok2');
+					postCheck(0);					
 				}
 			})
 		});
 		
-		document.getElementById("fail").addEventListener('tap', function() {
-			var btnArray = ['确定', '取消'];
-			mui.confirm('请您再次确认信息是否合格，避免误删？', '提示', btnArray, function(e) {
-				if (e.index == 1) {
-					
-				} else {
-					
+		//审核(？)
+		function postCheck(type) {
+			var ids = "";
+			$('p.item-check').each(function() {
+				var listState = $(this).children('input').prop("checked");
+				if(listState) {
+					ids+=$(this).data('id')+',';
 				}
 			})
-		});
+			ids = ids.toString().replace(/,/g, '') 
+			console.log(ids)
+			var Params = getCode();
+			$.ajax({
+				url: baseUrl + 'RightMain/AuditReport',
+				type: 'POST',
+				data: JSON.stringify({
+					AuditId: ids,
+					Type: type,
+	            	slinkcode:Params[0],
+					r:Params[1]
+				}),
+				contentType: 'application/json',
+				dataType: 'json',
+				success: function(res) {
+					console.log(res);
+					getData();
+				}
+			})
+		}
+
+		//选择
+		function chooseItem() {
+			var flag = true;
+			$('#edit').click(function() {
+				$(".th_list>span, .tr_list>span").css("width", "24%");
+				$(".tr_list>span:nth-of-type(3)").css("width", "28%");
+				flag = !flag;
+				if(!flag) {
+					$('p.mio-check').addClass('open');
+					$('div.footer').addClass('open');
+					$('div.contains').addClass('contain');
+				} else {
+					$('p.mio-check.open').removeClass('open');
+					$('div.footer.open').removeClass('open');
+					$('div.contains.contain').removeClass('contain');
+				}
+			})
+			$('p.mio-check').on('click', function() {
+				//单选
+				var add = 0,
+					size = $('p.item-check').length;
+
+				var all = $(this).hasClass('all-check');
+				if(all) {
+					var state = $('p.all-check').children('input').prop("checked");
+					//全选
+					if(state) {
+						$('p.mio-check').each(function() {
+							$(this).children('span').addClass('open');
+						})
+						add = size;
+					} else {
+						$('p.mio-check').each(function() {
+							$(this).children('span.open').removeClass('open');
+						})
+						add = 0;
+					}
+				} else {
+					$('p.item-check').each(function() {
+						var listState = $(this).children('input').prop("checked");
+						if(listState) {
+							add++;
+						}
+					})
+					var state = $(this).children('input').prop("checked");
+					//单选判断全选
+					if(add === size) {
+						$('p.mio-check').each(function() {
+							$(this).children('span').addClass('open');
+						})
+						$('p.all-check').children('input').prop("checked", true);
+					} else {
+						$('p.all-check').children('span.open').removeClass('open');
+						$('p.all-check').children('input').prop("checked", false);
+						if(state) {
+							$(this).children('span').addClass('open');
+						} else {
+							$(this).children('span.open').removeClass('open');
+						}
+					}
+				}
+			})
+
+		}
+		
 	</script>
 
 </html>

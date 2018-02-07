@@ -8,13 +8,48 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../css/common.css" />
 		<style type="text/css">
-			div.history_page{width:100vw;min-height:100vh;background: #fff;}
-			.content>div{padding-top:44px;}
-			ul{font-size:0;text-align: center;}
-			.th_list{width: 100%;background: #8f8f94;color: #fff;font-size:15px;line-height: 40px;}
-			.th_list>span,.tr_list>span{display: inline-block;width: 32%;}
-			.tr_list{width: 100%;background: #ddd;color: #000;font-size:12px;padding: 5px 0;margin:3px 0;}
-			.tr_list>span:nth-of-type(1){color: #179552;}
+			div.history_page {
+				width: 100vw;
+				min-height: 100vh;
+				background: #fff;
+			}
+			
+			.content>div {
+				padding-top: 44px;
+			}
+			
+			ul {
+				font-size: 0;
+				text-align: center;
+			}
+			
+			.th_list {
+				width: 100%;
+				background: #8f8f94;
+				color: #fff;
+				font-size: 15px;
+				line-height: 40px;
+			}
+			
+			.th_list>span,
+			.tr_list>span {
+				display: inline-block;
+				width: 32%;
+				vertical-align: middle;
+			}
+			
+			.tr_list {
+				width: 100%;
+				background: #ddd;
+				color: #000;
+				font-size: 12px;
+				padding: 5px 0;
+				margin: 3px 0;
+			}
+			
+			.tr_list>span:nth-of-type(1) {
+				color: #179552;
+			}
 		</style>
 	</head>
 
@@ -32,30 +67,72 @@
 							<span>审核人</span>
 							<span>审核时间</span>
 						</li>
-						<li class="tr_list">
-							<span>合格</span>
-							<span>慕寒</span>
-							<span>2017.10.3</span>
-						</li>
-						<li class="tr_list">
-							<span>合格</span>
-							<span>慕寒</span>
-							<span>2017.10.3</span>
-						</li>
-						<li class="tr_list">
-							<span>合格</span>
-							<span>慕寒</span>
-							<span>2017.10.3</span>
-						</li>
+						<div class="tr">
+							<!--<li class="tr_list">
+								<span>合格</span>
+								<span>慕寒</span>
+								<span>2017.10.3</span>
+							</li>-->
+						</div>
 					</ul>
 				</div>
 			</div>
 		</div>
 	</body>
+	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/mui.min.js"></script>
 	<script src="../js/echarts-all.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		mui.init();
+
+		$('a.history_btn').click(function() {
+			window.location.href = thisUrl + "views/history.html?id=" + data.SQLID;
+		})
+
+		var id = getQueryString("id");
+		//		查看资料历史
+		var Params = getCode();
+		$.ajax({
+			url: baseUrl + 'RightMain/GetAuditList',
+			type: 'GET',
+			data: {
+				SQLID: id,
+            	slinkcode:Params[0],
+				r:Params[1]
+			},
+			dataType: 'json',
+			success: function(res) {
+				console.log(res);
+				var dataList = res.rows;
+				var model='';
+				if(dataList.length > 0) {
+					for(var i = 0; i < dataList.length; i++) {
+						var status;
+						switch(dataList[i].CheckPass) {
+							case 1:
+								status = "合格";
+								break;
+							default:
+								status = "不合格";
+								break;
+						}
+						model += '<li class="tr_list">' +
+							'<span>' + status + '</span>' +
+							'<span>' + dataList[i].CheckXM + '</span>' +
+							'<span>' + dataList[i].JLCheckDT + '</span>' +
+							'</li>';
+					}
+					$('.history_page .tr').html(model);
+				} else {
+					$('.history_page .tr').text('暂无数据').css({
+						"font-size": "14px"
+					});
+				}
+
+			}
+		})
+		
 	</script>
 
 </html>

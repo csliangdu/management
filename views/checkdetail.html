@@ -8,11 +8,40 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../css/common.css" />
 		<style type="text/css">
-			div.checkdetail_page{width:100vw;min-height:100vh;background: #fff;}
-			div.checkdetail_page ul{font-size:14px;padding-top:44px;}
-			div.checkdetail_page li{background: #ddd;margin-top: 5px;line-height: 30px;padding:0 10px;}
-			div.checkdetail_page li>span:nth-of-type(1){display:inline-block;width:38%;font-size: 16px;}
-			li>span>i.mui-icon{color: #008dff;font-size:18px;}
+			div.checkdetail_page {
+				width: 100vw;
+				min-height: 100vh;
+				background: #fff;
+			}
+			
+			div.checkdetail_page ul {
+				font-size: 14px;
+				padding-top: 44px;
+			}
+			
+			div.checkdetail_page li {
+				background: #ddd;
+				margin-top: 5px;
+				line-height: 30px;
+				padding: 0 10px;
+			}
+			
+			div.checkdetail_page li>span:nth-of-type(1) {
+				display: inline-block;
+				width: 38%;
+				font-size: 16px;
+			}
+			
+			div.checkdetail_page li>span:nth-of-type(2) {
+				display: inline-block;
+				width: 60%;
+				vertical-align: middle;
+			}
+			
+			li>span>i.mui-icon {
+				color: #008dff;
+				font-size: 18px;
+			}
 		</style>
 	</head>
 
@@ -22,40 +51,40 @@
 				<header id="header" class="mui-bar mui-bar-nav">
 					<a href="./check.html" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 					<h1 class="mui-title">资料详情</h1>
-					<a href="./history.html" class="mui-icon mui-icon-info-filled mui-pull-right" style="color: #fff;"></a>
+					<a class="history_btn mui-icon mui-icon-info-filled mui-pull-right" style="color: #fff;"></a>
 				</header>
 				<ul>
 					<li>
 						<span>资料名称：</span>
-						<span class="name">asdf1321</span>
+						<span class="name"></span>
 					</li>
 					<li>
 						<span>部位：</span>
-						<span class="buwei">艾丝凡</span>
+						<span class="buwei"></span>
 					</li>
 					<li>
 						<span>建表日期：</span>
-						<span class="creatTime">2017.11.02</span>
+						<span class="creatTime"></span>
 					</li>
 					<li>
 						<span>编辑日期：</span>
-						<span class="editTime">2017.11.02</span>
+						<span class="editTime"></span>
 					</li>
 					<li>
 						<span>完成日期：</span>
-						<span class="finishTime">2017.11.02</span>
+						<span class="finishTime"></span>
 					</li>
 					<li>
 						<span>审核日期：</span>
-						<span class="checkTime">2017.11.02</span>
+						<span class="checkTime"></span>
 					</li>
 					<li>
 						<span>上传日期：</span>
-						<span class="updateTime">2017.11.02</span>
+						<span class="updateTime"></span>
 					</li>
 					<li>
 						<span>审核人：</span>
-						<span class="checkName">mioAkuma</span>
+						<span class="checkName"></span>
 					</li>
 					<li>
 						<span>所属分部分项：</span>
@@ -65,9 +94,39 @@
 			</div>
 		</div>
 	</body>
+	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		mui.init();
+
+		var data = window.sessionStorage.getItem('data');
+		data = JSON.parse(data);
+		console.log(data);
+		if(data.RepName) $('.checkdetail_page .name').text(data.RepName)
+		if(data.PrjBW) $('.checkdetail_page .buwei').text(data.PrjBW)
+		if(data.CreateDT) $('.checkdetail_page .creatTime').text(data.CreateDT)
+		if(data.EditDT) $('.checkdetail_page .editTime').text(data.EditDT)
+		if(data.OverHour) $('.checkdetail_page .finishTime').text(data.OverHour)
+		if(data.JLCheckDT) $('.checkdetail_page .checkTime').text(data.JLCheckDT)
+		if(data.SendDT) $('.checkdetail_page .updateTime').text(data.SendDT)
+		if(data.CheckXM) $('.checkdetail_page .checkName').text(data.CheckXM)
+		var rootName = window.sessionStorage.getItem('rootName');
+		rootName = rootName.split(",");
+		var model = "";
+		for (var i = 0; i < rootName.length; i++) {
+			if(i == rootName.length){
+				model += rootName[i];
+			}else{
+				model += rootName[i]+'<i class="mui-icon mui-icon-arrowright"></i>';
+			}
+		}
+		var str =
+			$('.checkdetail_page .child_list').html(model);
+
+		$('a.history_btn').click(function() {
+			window.location.href = thisUrl + "views/history.html?id=" + data.SQLID;
+		})
 	</script>
 
 </html>
