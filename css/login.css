@@ -4,6 +4,7 @@ div.banner_font{width: 100%;padding:40% 0}
 div.banner_font>img{width:100%;}
 form.login-form.mui-input-group{background: none;}
 form.login-form .mui-input-row{background: #fff;}
+form.login-form .mui-input-row .mui-input-password~.mui-icon-eye{height: 24px;}
 .mui-input-group:after{height: 0;}
 form.login-form .mui-input-row label~input{font-size: 14px;width: 80%;}
 form.login-form.mui-input-group .mui-input-row{margin-bottom: 5%;}

@@ -8,11 +8,35 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../css/common.css" />
 		<style type="text/css">
-			div.check_page{width:100vw;min-height:100vh;background: #fff;}
-			div.check_page ul{font-size:14px;padding:44px 10px 0 10px;}
-			div.check_page li{border-bottom: 1px solid #ddd;}
-			div.check_page li span{display: inline-block;line-height: 30px;color: #000;vertical-align: middle;}
-			span.color-circle{width: 18px;height: 18px;background: #179552;border-radius: 50%;margin-right: 5px;}
+			div.check_page {
+				width: 100vw;
+				min-height: 100vh;
+				background: #fff;
+			}
+			
+			div.check_page ul {
+				font-size: 14px;
+				padding: 44px 10px 0 10px;
+			}
+			
+			div.check_page li {
+				border-bottom: 1px solid #ddd;
+			}
+			
+			div.check_page li span {
+				display: inline-block;
+				line-height: 30px;
+				color: #000;
+				vertical-align: middle;
+			}
+			
+			span.color-circle {
+				width: 18px;
+				height: 18px;
+				background: #179552;
+				border-radius: 50%;
+				margin-right: 5px;
+			}
 		</style>
 	</head>
 
@@ -21,35 +45,101 @@
 			<div class="content">
 				<header id="header" class="mui-bar mui-bar-nav">
 					<a href="../index.html" class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-					<h1 class="mui-title">资料查看</h1>
+					<h1 class="mui-title"></h1>
 				</header>
 				<ul>
-					<li>
+					<!--<li>
 						<a href="./checkdetail.html">
 							<span class="color-circle"></span>
 							<span>123456</span>
 						</a>
-					</li>
-					<li>
-						<a href="./checkdetail.html">
-							<span class="color-circle"></span>
-							<span>123456</span>
-						</a>
-					</li>
-					<li>
-						<a href="./checkdetail.html">
-							<span class="color-circle"></span>
-							<span>123456</span>
-						</a>
-					</li>
-					
+					</li>-->
 				</ul>
 			</div>
 		</div>
 	</body>
+	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		mui.init();
+
+		
+		var name = decodeURI(getQueryString("name")), pid = getQueryString("pid"), bid = getQueryString("bid");
+		
+		
+		var rootName = window.sessionStorage.getItem('rootName');
+		if(rootName){
+			//刷新和退格操作
+			var currRootNameArr = rootName.split(",");
+			var aim = currRootNameArr.filter(item => item == name);
+			if(aim.length > 0){
+				var index = currRootNameArr.indexOf(aim[0])+1;
+				currRootNameArr.splice(index,1);
+			}else{
+				currRootNameArr.push(name);
+				
+			}
+			rootName = currRootNameArr.join(',');
+			window.sessionStorage.setItem('rootName',rootName);
+		}else{
+			window.sessionStorage.setItem('rootName',name);
+		}
+		
+		
+		
+		$('.check_page .mui-title').text(name);
+		var Params = getCode();
+		$.ajax({
+			url: baseUrl + 'Home/GetMenus',
+			type: 'GET',
+			data: {
+				PrjID: pid,
+				node:bid,
+            	slinkcode:Params[0],
+				r:Params[1]
+			},
+			dataType: 'json',
+			success: function(res) {
+				console.log(res);
+				var model = "";
+				var dataList = res;
+				if(dataList.length > 0) {
+					for(var i = 0; i < dataList.length; i++) {
+						if(dataList[i].leaf){
+							var page = window.sessionStorage.getItem('page'),urlName;
+							if(page == "jlsh"){
+								urlName = "./audit.html";
+							}else if(page == "zlck"){
+								urlName = "./table.html";
+							}
+							model += '<li data-id="' + dataList[i].id + '">' +
+							'<a href="'+urlName+'?id='+dataList[i].id+'">' +
+							'<span class="color-circle"></span>' +
+							'<span>' + dataList[i].text + '</span>' +
+							'</a>' +
+							'</li>'
+						}else{							
+							model += '<li data-id="' + dataList[i].id + '">' +
+								'<a href="./check.html?name='+dataList[i].text+'&pid='+pid+'&bid='+dataList[i].id+'">' +
+								'<span class="color-circle"></span>' +
+								'<span>' + dataList[i].text + '</span>' +
+								'</a>' +
+								'</li>'
+						}
+					}
+					$('.check_page ul').html(model);
+				}else{					
+					$('.check_page ul').text('暂无数据').css({
+						"text-align": 'center',
+						"line-height": "40px"
+					});
+				}
+
+
+			}
+		})
+		
 	</script>
 
 </html>

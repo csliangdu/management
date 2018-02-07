@@ -8,18 +8,72 @@
 		<link href="../css/mui.min.css" rel="stylesheet" />
 		<link rel="stylesheet" type="text/css" href="../css/common.css" />
 		<style type="text/css">
-			div.table_page{width:100vw;min-height:100vh;background: #fff;}
-			.content>div{padding-top:44px;}
+			div.table_page {
+				width: 100vw;
+				min-height: 100vh;
+				background: #fff;
+			}
 			
-			ul{font-size:0;text-align: center;}
-			.th_list{width: 100%;background: #8f8f94;color: #fff;font-size:15px;line-height: 40px;}
-			.th_list>span,.tr_list>span{display: inline-block;width: 24%;}
-			.tr_list{width: 100%;background: #ddd;color: #000;font-size:12px;padding: 5px 0;margin:3px 0;}
-			.tr_list>span>a.mui-icon{font-size: 15px;border: 1px solid #000;border-radius: 50%;color: #000;}
-			.tr_list>span:nth-of-type(1){width:22%}
-			.tr_list>span:nth-of-type(2){width:18%}
-			.tr_list>span:nth-of-type(3){width:40%}
-			.tr_list>span:nth-of-type(4){width:10%}
+			.content>div {
+				padding-top: 44px;
+			}
+			
+			ul {
+				font-size: 0;
+				text-align: center;
+			}
+			
+			.th_list {
+				width: 100%;
+				background: #8f8f94;
+				color: #fff;
+				font-size: 15px;
+				line-height: 40px;
+			}
+			
+			.th_list>span,
+			.tr_list>span {
+				display: inline-block;
+				width: 24%;
+			}
+			
+			.tr_list {
+				width: 100%;
+				background: #ddd;
+				color: #000;
+				font-size: 12px;
+				padding: 5px 0;
+				margin: 3px 0;
+			}
+			
+			.tr_list>span>a.mui-icon {
+				font-size: 15px;
+				border: 1px solid #000;
+				border-radius: 50%;
+				color: #000;
+			}
+			
+			.tr_list>span:nth-of-type(1) {
+				width: 22%;
+			}
+			
+			.tr_list>span:nth-of-type(2) {
+				width: 18%;
+			}
+			
+			.tr_list>span:nth-of-type(3) {
+				width: 40%;
+				vertical-align: middle;
+			}
+			
+			.tr_list>span:nth-of-type(4) {
+				width: 10%;
+			}
+			span.fontColor.black{color:#000;}
+			span.fontColor.green{color:#179552;}
+			span.fontColor.red{color:#c40000;}
+			span.fontColor.blue{color:#013cc1;}
+			
 		</style>
 	</head>
 
@@ -38,32 +92,92 @@
 							<span>资料名称</span>
 							<span>详情</span>
 						</li>
-						<li class="tr_list">
-							<span>审核未通过</span>
-							<span>100.00%</span>
-							<span>撒旦法卡萨帝法</span>
-							<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
-						</li>
-						<li class="tr_list">
-							<span>审核未通过</span>
-							<span>100.00%</span>
-							<span>撒旦法卡萨帝法</span>
-							<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
-						</li>
-						<li class="tr_list">
-							<span>审核未通过</span>
-							<span>100.00%</span>
-							<span>撒旦法卡萨帝法</span>
-							<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
-						</li>
+						<div class='tr'>
+							<!--<li class="tr_list">
+								<span>审核未通过</span>
+								<span>100.00%</span>
+								<span>撒旦法卡萨帝法</span>
+								<span><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>
+							</li>-->
+						</div>
+
 					</ul>
 				</div>
 			</div>
 		</div>
 	</body>
+	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		mui.init();
+		var obj = [];
+		var id = getQueryString("id");
+		var Params = getCode();
+		$.ajax({
+			url: baseUrl + 'RightMain/GetReportList',
+			type: 'GET',
+			data: {
+				id: id,
+            	slinkcode:Params[0],
+				r:Params[1]
+			},
+			dataType: 'json',
+			success: function(res) {
+				console.log(res);
+				var model = "";
+				var dataList = res.rows;
+				if(dataList.length > 0) {
+					for(var i = 0; i < dataList.length; i++) {
+						var status,color = "black";
+						switch(dataList[i].CheckPass) {
+							case 1:
+								status = "审核通过";
+								color = "green";
+								break
+							case 2:
+								status = "审核未通过";
+								color = "red";
+								break
+							case 3:
+								status = "已删除";
+								break
+							case 99:
+								status = "未通过已撤回";
+								break
+							case 100:
+								status = "重新上传";
+								break
+							default:
+								status = "未审核";
+								color = "blue";
+						}
+						var checkNum = dataList[i].CheckPass === 1 ? (dataList[i].Num === 0 || dataList[i].Num === 1 ? 100 : (100 / dataList[i].Num).toFixed(2)) : 0.00;
+						
+						var jsonStr = JSON.stringify(dataList[i]);
+						obj.push(jsonStr);
+						model += '<li class="tr_list">' +
+							'<span class="fontColor '+color+'">' + status + '</span>' +
+							'<span>' + checkNum + '</span>' +
+							'<span>' + dataList[i].RepName + '</span>' +
+							'<span class="save" data-index="' + i + '" ><a href="./checkdetail.html" class="mui-icon mui-icon-more"></a></span>' +
+							'</li>';
+					}
+					$('.table_page .tr').html(model);
+					$('.save').on('click', function() {
+						var index = $(this).data('index');
+						window.sessionStorage.setItem('data', obj[index]);
+					})
+				} else {
+					$('.table_page .tr').text('暂无数据').css({
+						"text-align": 'center',
+						"line-height": "40px",
+						"font-size": "14px"
+					});
+				}
+			}
+		})
+		
 	</script>
 
 </html>

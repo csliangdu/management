@@ -6,8 +6,8 @@
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<title>档案管理</title>
 		<link href="css/mui.min.css" rel="stylesheet" />
-		<link rel="stylesheet" type="text/css" href="css/common.css"/>
-		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
 	</head>
 
 	<body class="home_page">
@@ -15,23 +15,23 @@
 		<header id="header" class="mui-bar mui-bar-nav">
 			<h1 class="mui-title">甘肃省公路工程档案资料管理系统</h1>
 		</header>
-			
+
 		<div class="home_content">
 			<div class="choose_items">
-				<p class="xiangmu-name mui-clearfix" id="xiangMu" state="0" >
-					<span >选择项目</span>
-					<img src="image/choose.png"/>
+				<p class="xiangmu-name mui-clearfix" id="xiangMu" state="0">
+					<span class="chooseOne">选择项目</span>
+					<img src="image/choose.png" />
 				</p>
-				<p class="biaoduan-name mui-clearfix" id="biaoDuan" state='0' >
-					<span >选择标段</span>
-					<img src="image/choose.png"/>
+				<p class="biaoduan-name mui-clearfix" id="biaoDuan" state='0'>
+					<span class="chooseTwo">选择标段</span>
+					<img src="image/choose.png" />
 				</p>
 			</div>
 			<ul class="home_menu">
 				<li>
 					<a class="Check">
 						<p>
-							<img src="image/zlck.png"/>
+							<img src="image/zlck.png" />
 							<span class="mui-badge mui-badge-danger">45</span>
 						</p>
 						<span>资料查看</span>
@@ -40,7 +40,7 @@
 				<li>
 					<a class="Datachart">
 						<p>
-							<img src="image/bhg.png"/>
+							<img src="image/bhg.png" />
 							<span class="mui-badge mui-badge-danger">45</span>
 						</p>
 						<span>不合格数据统计</span>
@@ -49,7 +49,7 @@
 				<li>
 					<a class="Audit">
 						<p>
-							<img src="image/jlsh.png"/>
+							<img src="image/jlsh.png" />
 							<span class="mui-badge mui-badge-danger">45</span>
 						</p>
 						<span>监理审核</span>
@@ -58,7 +58,7 @@
 				<li>
 					<a class="Book">
 						<p>
-							<img src="image/tjtz.png"/>
+							<img src="image/tjtz.png" />
 							<span class="mui-badge mui-badge-danger">45</span>
 						</p>
 						<span>统计台帐</span>
@@ -67,7 +67,7 @@
 				<li>
 					<a>
 						<p>
-							<img src="image/ewm.png"/>
+							<img src="image/ewm.png" />
 							<span class="mui-badge mui-badge-danger">45</span>
 						</p>
 						<span>二维码扫描</span>
@@ -76,7 +76,7 @@
 				<li>
 					<a>
 						<p>
-							<img src="image/xcjc.png"/>
+							<img src="image/xcjc.png" />
 							<span class="mui-badge mui-badge-danger">45</span>
 						</p>
 						<span>现场检测</span>
@@ -85,16 +85,17 @@
 				<li>
 					<a href="views/setting.html">
 						<p>
-							<img src="image/setting.png"/>
+							<img src="image/setting.png" />
 							<span class="mui-badge mui-badge-danger">45</span>
 						</p>
 						<span>设置</span>
 					</a>
 				</li>
 				<li>
-					<a href="views/more.html">
+					<!--<a href="views/more.html">-->
+					<a>
 						<p>
-							<img src="image/more.png"/>
+							<img src="image/more.png" />
 							<span class="mui-badge mui-badge-danger">45</span>
 						</p>
 						<span>更多</span>
@@ -102,106 +103,154 @@
 				</li>
 			</ul>
 		</div>
-		
-			
+
 		<footer>
 			<p>数据@甘肃交通质监局&nbsp;支持@兴陇智远</p>
 		</footer>
 
 	</body>
 	<script src="js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/base64.js" type="text/javascript" charset="utf-8"></script>
 	<script src="js/mui.min.js"></script>
+	<script src="js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		var baseUrl = "http://61.178.231.106:9725/";
-		var thisUrl = "http://127.0.0.1:8020/management/";
-		mui.init();
 		mui.plusReady(function() {
 			var first = null;
 			mui.back = function() {
-				if (!first) {
+				if(!first) {
 					first = new Date().getTime();
 					mui.toast('再按一次退出应用');
 					setTimeout(function() {
 						first = null;
 					}, 2000);
 				} else {
-					if (new Date().getTime() - first < 2000) {
+					if(new Date().getTime() - first < 2000) {
 						plus.runtime.quit();
 					}
 				}
 			};
 		})
-		
-		
-		
+
+		var bid, pId;
+		//选择项目
 		document.getElementById("xiangMu").addEventListener('tap', function() {
+			var Params1 = getCode();
 			$.ajax({
-				url: baseUrl+'Home/GetLeftMenus',
-	            type: 'GET',
-	            data:{node:"root"},
-	            dataType:'json',
-	            success: function(res){
-	                if(res.result){
-	                	console.log(res)
-	                }else{
-	                	mui.toast(res.msg);
-	                }
-	            }
+				url: baseUrl + 'Home/GetLeftMenus',
+				type: 'GET',
+				data: {
+					node: "root",
+					slinkcode: Params1[0],
+					r: Params1[1]
+				},
+				dataType: 'json',
+				success: function(res) {
+					if(res) {
+						var dataList = res[0].children[0].children;
+						var model = "";
+						for(var i = 0; i < dataList.length; i++) {
+							model += '<p class="prj" data-id="' + dataList[i].id + '">' + dataList[i].text + '</p>';
+						}
+						mui.alert(model, "项目", "取消");
+						$('p.prj').on("click", function() {
+							pId = $(this).data('id');
+							var inner = $(this).text();
+							$('.chooseOne').text(inner);
+							$("#xiangMu").attr('state', '1')
+							mui.closePopup();
+						})
+					} else {
+						mui.toast(res.msg);
+					}
+				}
 			})
-//			mui.alert('<p>数据@甘肃交通质监局&nbsp;支持@兴陇智远</p>',"项目","取消", function() {
-//				
-//			});
 		});
-		
+		//选择标段
+		var Params2 = getCode();
 		document.getElementById("biaoDuan").addEventListener('tap', function() {
+			if(!pId) {
+				mui.toast("请选择项目");
+				return;
+			}
 			$.ajax({
-				url: baseUrl+'Home/GetMenus',
-	            type: 'GET',
-	            dataType:'json',
-	            success: function(res){
-	                if(res.result){
-	                	console.log(res)
-	                }else{
-	                	mui.toast(res.msg);
-	                }
-	            }
+				url: baseUrl + 'Home/GetMenus',
+				type: 'GET',
+				data: {
+					node: "root",
+					PrjID: pId,
+					slinkcode: Params2[0],
+					r: Params2[1]
+				},
+				dataType: 'json',
+				success: function(res) {
+					if(res) {
+						console.log(res)
+						var dataList = res[0].children;
+						var model = "";
+						for(var i = 0; i < dataList.length; i++) {
+							model += '<p class="bd" data-id="' + dataList[i].id + '">' + dataList[i].text + '</p>';
+						}
+						mui.alert(model, "标段", "取消");
+						$('p.bd').on("click", function() {
+							bId = $(this).data('id');
+							var inner = $(this).text();
+							$('.chooseTwo').text(inner);
+							$("#biaoDuan").attr('state', '2')
+							mui.closePopup();
+
+						})
+					} else {
+						mui.toast(res.msg);
+					}
+				}
 			})
-//			mui.alert('<p>数据@甘肃交通质监局&nbsp;支持@兴陇智远</p>',"标段","取消", function() {
-//				
-//			});
 		});
-		
+
 		//页面跳转
-		$('a.Check').click(function(){
-//			checkOption("views/check.html")
-			window.location.href = thisUrl+"views/check.html";
+		$('a.Check').click(function() {
+			checkOption(function() {
+				var Params = getCode();
+				var name = encodeURI('资料查看');
+				window.location.href = thisUrl + "views/check.html?name=" + name + "&pid=" + pId + "&bid=" + bId + "&slinkcode=" + Params[0] + "&r=" + Params[1];
+				window.sessionStorage.setItem('page', 'zlck');
+			})
 		})
-		$('a.Datachart').click(function(){
-//			checkOption("views/datachart.html")
-			window.location.href = thisUrl+"views/datachart.html";
+		$('a.Audit').click(function() {
+			checkOption(function() {
+				var Params = getCode();
+				var name = encodeURI('监理审核');
+				window.location.href = thisUrl + "views/check.html?name=" + name + "&pid=" + pId + "&bid=" + bId + "&slinkcode=" + Params[0] + "&r=" + Params[1];
+				window.sessionStorage.setItem('page', 'jlsh');
+			})
 		})
-		$('a.Audit').click(function(){
-//			checkOption("views/audit.html")
-			window.location.href = thisUrl+"views/audit.html";
+		//不合格数据（暂无）
+		$('a.Datachart').click(function() {
+			var Params = getCode();
+			checkOption(function() {
+				window.location.href = thisUrl + "views/datachart.html?id=" + bId + "&slinkcode=" + Params[0] + "&r=" + Params[1];
+			})
 		})
-		$('a.Book').click(function(){
-//			checkOption("views/book.html")
-			window.location.href = thisUrl+"views/book.html";
+		//统计台账（暂无）
+		$('a.Book').click(function() {
+			var Params = getCode();
+			checkOption(function() {
+				window.location.href = thisUrl + "views/book.html?id=" + bId + "&slinkcode=" + Params[0] + "&r=" + Params[1];
+			})
 		})
-		
-//		function checkOption(urls){
-//			var state1 = parseInt($("#xiangMu").attr('state'));
-//			var state2 = parseInt($("#biaoDuan").attr('state'));
-//			if(state1){
-//				if(state2){
-//					window.location.href = thisUrl+urls;
-//				}else{
-//					mui.toast("请选择标段");
-//				}
-//			}else{
-//				mui.toast("请选择项目");
-//			}
-//		}
+
+		function checkOption(callback) {
+			var state1 = parseInt($("#xiangMu").attr('state'));
+			var state2 = parseInt($("#biaoDuan").attr('state'));
+			if(state1) {
+				if(state2) {
+					callback();
+				} else {
+					mui.toast("请选择标段");
+				}
+			} else {
+				mui.toast("请选择项目");
+			}
+		}
 	</script>
 
 </html>

@@ -43,11 +43,10 @@
 		</div>
 	</body>
 	<script src="../js/jquery-1.10.2.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="../js/base64.js" type="text/javascript" charset="utf-8"></script>
 	<script src="../js/mui.min.js"></script>
+	<script src="../js/common.js" type="text/javascript" charset="utf-8"></script>
 	<script type="text/javascript" charset="utf-8">
-		var baseUrl = "http://61.178.231.106:9725/";
-		var thisUrl = "http://127.0.0.1:8020/management/";
-		mui.init();
 		mui.plusReady(function() {
 			var first = null;
 			mui.back = function() {
@@ -101,6 +100,7 @@
 			
 			const myHeaders = new Headers();
     		myHeaders.append('Content-Type', 'application/json; charset=utf-8');
+    		var Params = getCode();
 			$.ajax({
 				url: baseUrl+'Home/Login',
 	            type: 'POST',
@@ -108,11 +108,14 @@
 	            data:{
 	            	userName:userName,
 	            	userPwd:pwd,
+	            	slinkcode:Params[0],
+					r:Params[1]
 	            },
 	            dataType:'json',
 	            success: function(res){
 	                if(res.result){
-	                	window.location.href = thisUrl+'index.html'
+	                	window.sessionStorage.setItem('username',userName); //用于修改密码标识
+	                	window.location.href = thisUrl+'index.html';
 	                }else{
 	                	mui.toast(res.msg);
 	                }
